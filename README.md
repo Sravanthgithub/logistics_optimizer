@@ -381,4 +381,6 @@ Route distances:
 main execution time: 3.82 seconds
 
 ```
+
+## Example routes - KMeans
 ![image](https://github.com/user-attachments/assets/2be26c63-3d68-44db-a567-491a68ac2d38)
