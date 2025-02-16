@@ -380,5 +380,6 @@ Route distances:
   Cluster 2: 0.10 km
 main execution time: 3.82 seconds
 
-![Example routes (kmeans)](image.png)
+![KMeans Routes](https://github.com/user-attachments/assets/07e9b897-0937-445f-b91d-6abacc11a693)
+
 ```
