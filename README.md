@@ -30,25 +30,148 @@ logistics_optimizer/
 └── README.md                    # This file
 ```
 
-## Features
+## Clustering Algorithms
 
-- Multiple clustering algorithms:
-  - K-Means
-  - DBSCAN
-  - Hierarchical Clustering
+### K-Means Clustering
+**Description**: Partitions points into k clusters by minimizing within-cluster variances.
 
-- Multiple route optimization algorithms:
-  - Minimal Route Optimizer (Nearest Neighbor with 2-opt improvement)
-  - Two-Opt Optimizer
-  - Graph-based TSP Optimizer
-  - Simulated Annealing
-  - Nearest Neighbor
+**When to Use**:
+- When clusters are expected to be roughly spherical
+- When clusters are expected to be of similar size
+- When the number of clusters is known or can be estimated
+- For large-scale clustering problems
 
-- Distance metrics:
-  - Haversine (for geographic coordinates)
-  - Euclidean
+**Pros**:
+- Simple and fast
+- Works well with large datasets
+- Clusters are easily interpretable
 
-- Interactive visualizations using Folium maps
+**Cons**:
+- Needs number of clusters specified
+- Sensitive to outliers
+- Assumes spherical clusters
+- May converge to local optima
+
+### DBSCAN (Density-Based Spatial Clustering)
+**Description**: Groups points based on density, identifying clusters of arbitrary shape.
+
+**When to Use**:
+- When clusters have irregular shapes
+- When the number of clusters is unknown
+- When data contains noise/outliers
+- When clusters have varying densities
+
+**Pros**:
+- Doesn't require predefined number of clusters
+- Can find arbitrarily shaped clusters
+- Robust to outliers
+- Can identify noise points
+
+**Cons**:
+- Sensitive to parameters (eps and min_samples)
+- Struggles with varying density clusters
+- May have trouble with high-dimensional data
+- Can be slower than K-means
+
+### Hierarchical Clustering
+**Description**: Builds a tree of clusters, either by merging (agglomerative) or splitting (divisive).
+
+**When to Use**:
+- When hierarchical relationship between clusters is important
+- When visualizing the clustering process is helpful
+- For smaller datasets
+- When cluster size varies significantly
+
+**Pros**:
+- Provides hierarchical representation
+- No need to specify number of clusters beforehand
+- More flexible than K-means
+- Good for hierarchical data
+
+**Cons**:
+- Computationally intensive (O(n³))
+- Not suitable for large datasets
+- Can be sensitive to noise
+- Results can be harder to interpret
+
+## Route Optimization Algorithms
+
+### Minimal Route Optimizer
+**Description**: Combines Nearest Neighbor approach with 2-opt improvement.
+
+**When to Use**:
+- For medium-sized clusters (20-100 points)
+- When balanced performance is needed
+- When computation time is a concern
+- For general-purpose route optimization
+
+**Complexity**:
+- Time: O(n²)
+- Space: O(n²)
+
+### Two-Opt Optimizer
+**Description**: Local search algorithm that repeatedly swaps edges to improve route.
+
+**When to Use**:
+- For small to medium clusters
+- When solution quality is prioritized over speed
+- When routes have obvious crossovers
+- For fine-tuning existing routes
+
+**Complexity**:
+- Time: O(n² * i) where i is iterations
+- Space: O(n²)
+
+### Graph TSP Optimizer
+**Description**: Graph-based approach using NetworkX, implements Christofides algorithm.
+
+**When to Use**:
+- For metric TSP problems
+- When theoretical guarantees are important
+- When clusters are small enough (≤15 points) for exact solutions
+- When balanced performance is needed
+
+**Complexity**:
+- Time: O(n³)
+- Space: O(n²)
+
+### Simulated Annealing Optimizer
+**Description**: Probabilistic optimization that can escape local optima.
+
+**When to Use**:
+- For complex landscapes with many local optima
+- When longer computation time is acceptable
+- When other methods get stuck in local optima
+- For large-scale optimization problems
+
+**Complexity**:
+- Time: O(n² * i) where i is iterations
+- Space: O(n²)
+
+### Nearest Neighbor Optimizer
+**Description**: Greedy algorithm that always chooses closest unvisited point.
+
+**When to Use**:
+- When fast solutions are needed
+- For initial route approximation
+- As part of hybrid algorithms
+- When solution quality is less critical
+
+**Complexity**:
+- Time: O(n²)
+- Space: O(n²)
+
+## Evaluation Metrics
+
+### Clustering Metrics
+- **Silhouette Score**: Measures how similar points are to their own cluster vs other clusters (range: -1 to 1, higher is better)
+- **Calinski-Harabasz Score**: Ratio of between-cluster to within-cluster dispersion (higher is better)
+- **Davies-Bouldin Score**: Average similarity measure of each cluster with its most similar cluster (lower is better)
+
+### Route Metrics
+- **Total Distance**: Sum of distances between consecutive points in route
+- **Computation Time**: Time taken to find solution
+- **Route Feasibility**: Checks if route visits all points exactly once
 
 ## Installation
 
@@ -63,117 +186,52 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Configuration
-
-Edit `config/config.yaml` to customize:
-- Clustering algorithm and parameters
-- Route optimization algorithm
-- Distance metric
-- Input/output paths
-- Visualization settings
-
-Example configuration:
-```yaml
-clustering:
-  algorithm: kmeans
-  params:
-    n_clusters: null  # null for auto-detection
-    random_state: 42
-    
-route_optimization:
-  algorithm: minimal  # or two_opt, graph_tsp, simulated_annealing, nearest_neighbor
-  
-distance_metric:
-  type: haversine  # or euclidean
-```
-
 ## Usage
 
 1. Place your data CSV file in the `data/` directory
-
-2. Run the optimizer:
+2. Adjust configuration in `config/config.yaml`
+3. Run:
 ```bash
 python main.py
 ```
 
-3. Check the results:
-- Console output shows comparative performance metrics
-- Visualizations are saved in the `output/` directory
-  - `clusters.html`: Shows clustered points
-  - `routes.html`: Shows optimized routes
+4. Check results in `output/` directory
 
-## Algorithm Details
+## Algorithm Selection Guidelines
 
-### Clustering Algorithms
-- **K-Means**: Partitions points into k clusters
-- **DBSCAN**: Density-based clustering, good for irregular shapes
-- **Hierarchical**: Agglomerative clustering with various linkage options
+### For Clustering
+1. Start with K-means if:
+   - Clusters are expected to be roughly spherical
+   - Quick results are needed
+   - Data size is large
 
-### Route Optimization
-- **Minimal Route Optimizer**: 
-  - Combines Nearest Neighbor with 2-opt improvement
-  - Good balance of speed and solution quality
-  - Time Complexity: O(n²)
+2. Use DBSCAN if:
+   - Data has noise/outliers
+   - Clusters have irregular shapes
+   - Number of clusters is unknown
 
-- **Two-Opt Optimizer**: 
-  - Local search algorithm
-  - Repeatedly swaps edges to improve route
-  - Time Complexity: O(n² * i) where i is iterations
+3. Use Hierarchical if:
+   - Hierarchical structure is important
+   - Dataset is small
+   - Cluster visualization is needed
 
-- **Graph TSP**: 
-  - Graph-based approach using NetworkX
-  - Implements Christofides algorithm for metric TSP
-  - Guaranteed 1.5-approximation for metric spaces
+### For Route Optimization
+1. Start with Minimal Route Optimizer if:
+   - Balanced performance is needed
+   - Clusters are medium-sized
 
-- **Simulated Annealing**: 
-  - Probabilistic optimization
-  - Can escape local optima
-  - Good for complex landscapes
+2. Use Graph TSP if:
+   - Clusters are small (≤15 points)
+   - Optimal solution is needed
+   - Theoretical guarantees are important
 
-## Notes on TSP
-
-The Traveling Salesman Problem (TSP) is NP-hard, meaning:
-- No known polynomial-time algorithm for optimal solution
-- All practical algorithms are approximations
-- Different algorithms may perform better for different data distributions
-
-The program automatically compares all available algorithms and selects the best one for each cluster based on:
-- Route distance
-- Computation time
-- Cluster size and characteristics
-
-## Output Example
-
-```
-Comparing route optimization algorithms for 64 points:
-+---------------------+-----------------+--------------+
-| Algorithm           |   Distance (km) |   Time (sec) |
-+=====================+=================+==============+
-| minimal             |            0.22 |         0.08 |
-| two_opt             |            0.22 |         2.11 |
-| graph_tsp           |            0.22 |         0.05 |
-| nearest_neighbor    |            0.27 |         0.00 |
-| simulated_annealing |            0.47 |         0.10 |
-+---------------------+-----------------+--------------+
-```
-
-## Contributing
-
-To add new algorithms:
-1. Implement the appropriate interface from `base_classes.py`
-2. Add the implementation to the respective module
-3. Update the configuration options in `config.yaml`
+3. Try Simulated Annealing if:
+   - Other methods get stuck in local optima
+   - Longer computation time is acceptable
 
 ## Dependencies
 
-- numpy
-- pandas
-- scikit-learn
-- folium
-- pyyaml
-- branca
-- networkx
-- tabulate
+See `requirements.txt` for complete list of dependencies.
 
 ## Example Output
 ```
