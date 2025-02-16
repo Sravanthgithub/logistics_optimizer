@@ -1,0 +1,24 @@
+clustering:
+  # Available algorithms: kmeans, dbscan, hierarchical
+  algorithm: kmeans
+  params:
+    n_clusters: null  # null for auto-detection
+    random_state: 42
+    
+route_optimization:
+  # Available algorithms: two_opt, nearest_neighbor, brute_force, simulated_annealing, graph_tsp
+  algorithm: nearest_neighbor
+  
+distance_metric:
+  # Available metrics: haversine, euclidean
+  type: euclidean
+
+visualization:
+  save_clusters: true
+  save_routes: true
+  output_dir: output/
+  open_browser: true
+
+paths:
+  data: data/data.csv
+  output: output/
