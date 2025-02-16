@@ -379,4 +379,6 @@ Route distances:
   Cluster 1: 0.22 km
   Cluster 2: 0.10 km
 main execution time: 3.82 seconds
+
+![Example routes (kmeans)](image.png)
 ```
