@@ -3,10 +3,13 @@ from typing import List, Tuple, Dict, Any
 import numpy as np
 from dataclasses import dataclass
 
-@dataclass
+@dataclass(frozen=True)  # Make it immutable and hashable
 class Point:
     latitude: float
     longitude: float
+    
+    def __hash__(self):
+        return hash((self.latitude, self.longitude))
 
 @dataclass
 class Route:

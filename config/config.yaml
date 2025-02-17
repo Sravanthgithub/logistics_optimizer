@@ -10,8 +10,8 @@ route_optimization:
   algorithm: nearest_neighbor
   
 distance_metric:
-  # Available metrics: haversine, euclidean
-  type: euclidean
+  # Available metrics: haversine, euclidean, or geopy, osrm
+  type: geopy
 
 visualization:
   save_clusters: true

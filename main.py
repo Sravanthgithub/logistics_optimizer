@@ -3,7 +3,7 @@ from src.clustering import KMeansClustering, DBSCANClustering, HierarchicalClust
 from src.route_optimizers import (TwoOptOptimizer, NearestNeighborOptimizer, 
                                 SimulatedAnnealingOptimizer, MinimalRouteOptimizer,
                                 GraphTSPOptimizer)
-from src.distance_metrics import HaversineDistance, EuclideanDistance
+from src.distance_metrics import HaversineDistance, EuclideanDistance, GeopyDistance, OSRMDistance
 from src.visualization import MapVisualizer
 from src.utils import load_config, load_points, timer_decorator, calculate_metrics, print_metrics
 import time
@@ -196,7 +196,9 @@ def main():
     # Initialize distance metric
     distance_metric = {
         'haversine': HaversineDistance,
-        'euclidean': EuclideanDistance
+        'euclidean': EuclideanDistance,
+        'geopy': GeopyDistance,
+        'osrm': OSRMDistance
     }[config['distance_metric']['type']]()
     
     # Initialize visualizer
