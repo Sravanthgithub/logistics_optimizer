@@ -384,3 +384,9 @@ main execution time: 3.82 seconds
 
 ## Example routes - KMeans
 ![image](https://github.com/user-attachments/assets/2be26c63-3d68-44db-a567-491a68ac2d38)
+
+## Most Optimal routes - KMeans
+### Using Geographical distances, taking into conideration of all the roads etc.
+![image](https://github.com/user-attachments/assets/0aad0e52-862e-4fce-a01f-6aeab5651de4)
+![image](https://github.com/user-attachments/assets/6d574908-2edc-4534-8dc8-c4bdfe988e3e)
+
